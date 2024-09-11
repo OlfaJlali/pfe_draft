@@ -9,12 +9,14 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import useShouldShowButtonSheet from './hooks/useShouldShowButtonSheet';
 import ButtonSheet from './navigators/ButtonSheet';
 import { StyleSheet, View } from 'react-native';
+import BordoreauxScreen from './screens/BordoreauxScreen'
 
 export type RootStackParamList = {
   SignIn: undefined;
   Home: undefined; 
   ForgotPassword: undefined;
   VerifyScreen: undefined;
+  Bordereaux: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -28,6 +30,8 @@ const App: React.FC = () => {
           <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
           <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ headerShown: false }} />
           <Stack.Screen name="VerifyScreen" component={VerifyScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Bordereaux" component={BordoreauxScreen} options={{ headerShown: false }} />
+
         </Stack.Navigator>
         <ConditionalButtonSheet />
       </View>

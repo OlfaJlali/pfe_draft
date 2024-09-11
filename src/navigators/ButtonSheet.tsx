@@ -1,11 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Animated } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation from React Navigation
 
 const { height } = Dimensions.get('window');
 
 const ButtonSheet: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
   const animatedHeight = useRef(new Animated.Value(height * 0.15)).current;
+  const navigation = useNavigation(); // Initialize navigation hook
 
   const toggleExpand = () => {
     setExpanded(!expanded);
@@ -16,10 +18,13 @@ const ButtonSheet: React.FC = () => {
     }).start();
   };
 
+  const goToBordoreaux = () => {
+    navigation.navigate('Bordoreaux'); // Navigate to the Bordoreaux screen
+  };
   return (
     <Animated.View style={[styles.bottomSheet, { height: animatedHeight }]}>
       <View style={styles.buttonRow}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={goToBordoreaux}>
           <Text style={styles.buttonText}>Bourderaux</Text>
         </TouchableOpacity>
 

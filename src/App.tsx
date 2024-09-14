@@ -10,6 +10,7 @@ import useShouldShowButtonSheet from './hooks/useShouldShowButtonSheet';
 import ButtonSheet from './navigators/ButtonSheet';
 import { StyleSheet, View } from 'react-native';
 import BordoreauxScreen from './screens/BordoreauxScreen'
+import BordoreauxFormScreen from './screens/BordoreauxForm';
 
 export type RootStackParamList = {
   SignIn: undefined;
@@ -17,6 +18,7 @@ export type RootStackParamList = {
   ForgotPassword: undefined;
   VerifyScreen: undefined;
   Bordoreaux: undefined;
+  BordoreauxForm: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -31,6 +33,8 @@ const App: React.FC = () => {
           <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ headerShown: false }} />
           <Stack.Screen name="VerifyScreen" component={VerifyScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Bordoreaux" component={BordoreauxScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="BordoreauxForm" component={BordoreauxFormScreen} options={{ headerShown: false }} />
+
 
         </Stack.Navigator>
         <ConditionalButtonSheet />

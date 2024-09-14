@@ -1,223 +1,239 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, TextInput, FlatList } from 'react-native';
-import DatePicker from 'react-native-date-picker'
-const { height } = Dimensions.get('window');
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
-const BordoreauxScreen: React.FC = () => {
-  const [totalAmount, setTotalAmount] = useState('1000000000');
-  const [selectedYear, setSelectedYear] = useState(2024);
-  const flatListRef = useRef<FlatList<number>>(null);
-  const [documentCount, setDocumentCount] = useState(0);
-  const [date, setDate] = useState(new Date())
-  const [open, setOpen] = useState(false)
+const BordoreauxFormScreen = () => {
+  const [progress, setProgress] = useState(1); // Example progress (out of 10)
+  const [documentType, setDocumentType] = useState('Facture');
+  const [paymentMode, setPaymentMode] = useState('');
+  const [documentRef, setDocumentRef] = useState('');
+  const [dueDate, setDueDate] = useState('');
+  const [documentDate, setDocumentDate] = useState('');
+  const [amount, setAmount] = useState('');
 
-  const incrementCount = () => setDocumentCount(prev => prev + 1);
-  const decrementCount = () => setDocumentCount(prev => Math.max(0, prev - 1));
-  const years = Array.from({ length: 21 }, (_, i) => selectedYear - 10 + i);
+  const handleDocumentTypeChange = (type: any) => {
+    setDocumentType(type);
+  };
 
-  useEffect(() => {
-    const selectedYearIndex = years.findIndex((year) => year === selectedYear);
-    if (flatListRef.current) {
-      flatListRef.current.scrollToIndex({
-        index: selectedYearIndex,
-        animated: false,
-        viewPosition: 0.5, // Center the item in the viewport
-      });
-    }
-  }, [selectedYear]);
-
-  const renderYear = ({ item }: { item: number }) => (
-    <TouchableOpacity onPress={() => setSelectedYear(item)}>
-      <Text style={[styles.yearText, item === selectedYear && styles.selectedYear]}>
-        {item}
-      </Text>
-    </TouchableOpacity>
-  );
+  const handlePaymentModeChange = (mode:any) => {
+    setPaymentMode(mode);
+  };
 
   return (
-    <View style={styles.container}>
-         
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Total amount</Text>
-        <TextInput
-          style={styles.input}
-          value={totalAmount}
-          onChangeText={setTotalAmount}
-          keyboardType="numeric"
-        />
-      </View>
-              {/* Bordereau Date */}
-          <TouchableOpacity
-          style={[styles.inputContainer]}
-          onPress={()=>setOpen(true)}
-        >
-          <Text style={styles.label}>Bordereau date</Text>
-          <Text style={styles.input}>{date.toDateString()}</Text>
-          <DatePicker
-           modal
-           open={open}
-           date={date}
-           mode='date'
-           onConfirm={(date) => {
-             setOpen(false)
-             setDate(date)
-           }}
-           onCancel={() => {
-             setOpen(false)
-           }}
-          />
-        </TouchableOpacity>
-         
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
 
+      <View style={styles.container}>
+        {/* Header Section */}
+        {/* <View style={styles.header}>
+          <Text style={styles.headerTitle}>Bordereau</Text>
+          <Text style={styles.subHeader}>lorem is aurn upsetir loremium episium</Text>
+        </View> */}
 
-      {/* Bordereau Date and Documents Number Side by Side */}
-      <View style={styles.horizontalContainer}>
+        {/* Progress Section */}
+        <View style={styles.progressContainer}>
+          <Text style={styles.progressText}>{progress}/10 left to complete</Text>
+          <Text style={styles.amountText}>50,000,000</Text>
+          <View style={styles.progressBarBackground}>
+            <View style={[styles.progressBarFill, { width: `${(progress / 10) * 100}%` }]} />
+          </View>
+          <Text style={styles.smallText}>10,000,000</Text>
+        </View>
 
-             {/* Bordereau Year */}
-      <View style={[styles.yearContainer,, styles.flexItem]}>
-        <Text style={styles.label}>Bordereau year</Text>
-        <FlatList
-          ref={flatListRef}
-          data={years}
-          keyExtractor={(item) => item.toString()}
-          renderItem={renderYear}
-          contentContainerStyle={styles.yearSelector}
-          showsVerticalScrollIndicator={false}
-          getItemLayout={(data, index) => ({
-            length: 50, // Height of each item
-            offset: 50 * index, // Position of each item
-            index,
-          })}
-          onScrollToIndexFailed={(info) => {
-            console.error('Scroll to index failed', info);
-          }}
-        />
-      </View>
-
-        {/* Documents Number */}
-        <View style={[styles.counterContainer, styles.flexItem]}>
-          <Text style={styles.label}>Documents number</Text>
-          <View style={styles.counter}>
-            <TouchableOpacity onPress={decrementCount} style={styles.counterButton}>
-              <Text style={styles.counterText}>-</Text>
+        {/* Document Type Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Type of document</Text>
+          <View style={styles.documentTypeContainer}>
+            <TouchableOpacity
+              style={[styles.documentTypeButton, documentType === 'Facture' && styles.activeButton]}
+              onPress={() => handleDocumentTypeChange('Facture')}
+            >
+              <Text style={styles.buttonText}>Facture</Text>
             </TouchableOpacity>
-            <Text style={styles.documentCount}>{documentCount}</Text>
-            <TouchableOpacity onPress={incrementCount} style={styles.counterButton}>
-              <Text style={styles.counterText}>+</Text>
+            <TouchableOpacity
+              style={[styles.documentTypeButton, documentType === 'Bon de commande' && styles.activeButton]}
+              onPress={() => handleDocumentTypeChange('Bon de commande')}
+            >
+              <Text style={styles.buttonText}>Bon de commande</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.documentTypeButton, documentType === 'Marche' && styles.activeButton]}
+              onPress={() => handleDocumentTypeChange('Marche')}
+            >
+              <Text style={styles.buttonText}>Marche</Text>
             </TouchableOpacity>
           </View>
         </View>
+
+        {/* Form Section */}
+        <View style={styles.section}>
+          <TextInput
+            style={styles.input}
+            placeholder="Document Ref"
+            value={documentRef}
+            onChangeText={setDocumentRef}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Due Date"
+            value={dueDate}
+            onChangeText={setDueDate}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Document Date"
+            value={documentDate}
+            onChangeText={setDocumentDate}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Amount"
+            value={amount}
+            onChangeText={setAmount}
+            keyboardType="numeric"
+          />
+        </View>
+
+        {/* Payment Mode Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Mode of Payment</Text>
+          <View style={styles.paymentModeContainer}>
+            <TouchableOpacity
+              style={[styles.paymentModeButton, paymentMode === 'Traite' && styles.activeButton]}
+              onPress={() => handlePaymentModeChange('Traite')}
+            >
+              <Text style={styles.buttonText}>Traite</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.paymentModeButton, paymentMode === 'Virement' && styles.activeButton]}
+              onPress={() => handlePaymentModeChange('Virement')}
+            >
+              <Text style={styles.buttonText}>Virement</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.paymentModeButton, paymentMode === 'Cheque' && styles.activeButton]}
+              onPress={() => handlePaymentModeChange('Cheque')}
+            >
+              <Text style={styles.buttonText}>Cheque</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Next Button */}
+        <TouchableOpacity style={styles.nextButton}>
+          <Text style={styles.nextButtonText}>Next</Text>
+        </TouchableOpacity>
       </View>
 
- 
-
-      {/* Save Button */}
-      <TouchableOpacity style={styles.saveButton} onPress={()=>console.log(date.toDateString() ,documentCount ,selectedYear ,totalAmount)}>
-        <Text style={styles.saveButtonText} >Save</Text>
-      </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    paddingBottom: 110,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    padding: 16,
-    paddingTop: 80
-    
+    padding: 20,
+    backgroundColor: '#F9F9F9',
   },
-  horizontalContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 16,
-  },
-  inputContainer: {
-    backgroundColor: '#f0f4ff',
-    padding: 16,
-    borderRadius: 10,
-    marginBottom: 16,
-  },
-  datePicker: {
-    width: '100%',
-  },
-  flexItem: {
-    flex: 1,
-    marginHorizontal: 8, // Add some margin between the two items
-  },
-  label: {
-    fontSize: 14,
-    color: '#333',
-    marginBottom: 8,
-  },
-  input: {
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-    borderColor: '#ddd',
-    borderWidth: 1,
-  },
-  yearContainer: {
-    backgroundColor: '#f0f4ff',
-    padding: 16,
-    borderRadius: 10,
-    marginBottom: 16,
-    height: 200, // Adjust height as needed
-  },
-  yearSelector: {
+  header: {
     alignItems: 'center',
+    marginBottom: 20,
   },
-  yearText: {
-    color: '#999',
-    fontSize: 18,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
   },
-  selectedYear: {
+  subHeader: {
+    fontSize: 14,
+    color: '#ddd',
+  },
+  progressContainer: {
+    marginBottom: 20,
+  },
+  progressText: {
+    fontSize: 16,
+    color: '#333',
+  },
+  amountText: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#000',
-    borderBottomWidth: 2,
-    borderBottomColor: '#000',
+    textAlign: 'right',
   },
-  counterText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  counterContainer: {
-    backgroundColor: '#f0f4ff',
-    padding: 16,
-    borderRadius: 10,
-    marginBottom: 16,
-  },
-  counter: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    paddingTop: 20
-  },
-  documentCount: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginHorizontal: 16,
-  },
-  counterButton: {
+  progressBarBackground: {
+    height: 10,
     backgroundColor: '#e0e0e0',
-    padding: 16,
-    borderRadius: 10,
+    borderRadius: 5,
+    marginVertical: 10,
   },
-  saveButton: {
-    backgroundColor: '#007bff',
-    padding: 16,
-    borderRadius: 10,
+  progressBarFill: {
+    height: 10,
+    backgroundColor: '#4caf50',
+    borderRadius: 5,
+  },
+  smallText: {
+    fontSize: 12,
+    color: '#666',
+  },
+  section: {
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  documentTypeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  documentTypeButton: {
+    flex: 1,
+    padding: 10,
+    marginHorizontal: 5,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 5,
     alignItems: 'center',
   },
-  saveButtonText: {
+  paymentModeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  paymentModeButton: {
+    flex: 1,
+    padding: 10,
+    marginHorizontal: 5,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  activeButton: {
+    backgroundColor: '#4caf50',
+  },
+  buttonText: {
+    color: '#000',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  },
+  nextButton: {
+    backgroundColor: '#4caf50',
+    padding: 15,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  nextButtonText: {
     color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 
-export default BordoreauxScreen;
+export default BordoreauxFormScreen;

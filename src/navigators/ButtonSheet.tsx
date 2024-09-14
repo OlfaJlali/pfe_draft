@@ -1,13 +1,16 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation from React Navigation
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../App'; // Import the types from where your navigator is defined
 
 const { height } = Dimensions.get('window');
+type SignInScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SignIn'>;
 
 const ButtonSheet: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
   const animatedHeight = useRef(new Animated.Value(height * 0.15)).current;
-  const navigation = useNavigation(); // Initialize navigation hook
+  const navigation = useNavigation<SignInScreenNavigationProp>(); // Use typed navigation
 
   const toggleExpand = () => {
     setExpanded(!expanded);

@@ -16,7 +16,7 @@ export type RootStackParamList = {
   Home: undefined; 
   ForgotPassword: undefined;
   VerifyScreen: undefined;
-  Bordereaux: undefined;
+  Bordoreaux: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -30,7 +30,7 @@ const App: React.FC = () => {
           <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
           <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ headerShown: false }} />
           <Stack.Screen name="VerifyScreen" component={VerifyScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="Bordereaux" component={BordoreauxScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Bordoreaux" component={BordoreauxScreen} options={{ headerShown: false }} />
 
         </Stack.Navigator>
         <ConditionalButtonSheet />

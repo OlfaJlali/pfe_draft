@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
 const BordoreauxFormScreen = () => {
-  const [progress, setProgress] = useState(5); // Example progress (out of 10)
+  const [progress, setProgress] = useState(1); // Example progress (out of 10)
   const [documentType, setDocumentType] = useState('Facture');
   const [paymentMode, setPaymentMode] = useState('');
   const [documentRef, setDocumentRef] = useState('');
@@ -10,120 +10,129 @@ const BordoreauxFormScreen = () => {
   const [documentDate, setDocumentDate] = useState('');
   const [amount, setAmount] = useState('');
 
-  const handleDocumentTypeChange = (type : any) => {
+  const handleDocumentTypeChange = (type: any) => {
     setDocumentType(type);
   };
 
-  const handlePaymentModeChange = (mode : any) => {
+  const handlePaymentModeChange = (mode:any) => {
     setPaymentMode(mode);
   };
 
   return (
-    <View style={styles.container}>
-      {/* Header Section */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Bordereau</Text>
-        <Text style={styles.subHeader}>lorem is aurn upsetir loremium episium</Text>
-      </View>
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
 
-      {/* Progress Section */}
-      <View style={styles.progressContainer}>
-        <Text style={styles.progressText}>{progress}/10 left to complete</Text>
-        <Text style={styles.amountText}>50,000,000</Text>
-        <View style={styles.progressBarBackground}>
-          <View style={[styles.progressBarFill, { width: `${(progress / 10) * 100}%` }]} />
+      <View style={styles.container}>
+        {/* Header Section */}
+        {/* <View style={styles.header}>
+          <Text style={styles.headerTitle}>Bordereau</Text>
+          <Text style={styles.subHeader}>lorem is aurn upsetir loremium episium</Text>
+        </View> */}
+
+        {/* Progress Section */}
+        <View style={styles.progressContainer}>
+          <Text style={styles.progressText}>{progress}/10 left to complete</Text>
+          <Text style={styles.amountText}>50,000,000</Text>
+          <View style={styles.progressBarBackground}>
+            <View style={[styles.progressBarFill, { width: `${(progress / 10) * 100}%` }]} />
+          </View>
+          <Text style={styles.smallText}>10,000,000</Text>
         </View>
-        <Text style={styles.smallText}>10,000,000</Text>
-      </View>
 
-      {/* Document Type Section */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Type of document</Text>
-        <View style={styles.documentTypeContainer}>
-          <TouchableOpacity
-            style={[styles.documentTypeButton, documentType === 'Facture' && styles.activeButton]}
-            onPress={() => handleDocumentTypeChange('Facture')}
-          >
-            <Text style={styles.buttonText}>Facture</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.documentTypeButton, documentType === 'Bon de commande' && styles.activeButton]}
-            onPress={() => handleDocumentTypeChange('Bon de commande')}
-          >
-            <Text style={styles.buttonText}>Bon de commande</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.documentTypeButton, documentType === 'Marche' && styles.activeButton]}
-            onPress={() => handleDocumentTypeChange('Marche')}
-          >
-            <Text style={styles.buttonText}>Marche</Text>
-          </TouchableOpacity>
+        {/* Document Type Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Type of document</Text>
+          <View style={styles.documentTypeContainer}>
+            <TouchableOpacity
+              style={[styles.documentTypeButton, documentType === 'Facture' && styles.activeButton]}
+              onPress={() => handleDocumentTypeChange('Facture')}
+            >
+              <Text style={styles.buttonText}>Facture</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.documentTypeButton, documentType === 'Bon de commande' && styles.activeButton]}
+              onPress={() => handleDocumentTypeChange('Bon de commande')}
+            >
+              <Text style={styles.buttonText}>Bon de commande</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.documentTypeButton, documentType === 'Marche' && styles.activeButton]}
+              onPress={() => handleDocumentTypeChange('Marche')}
+            >
+              <Text style={styles.buttonText}>Marche</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
 
-      {/* Form Section */}
-      <View style={styles.section}>
-        <TextInput
-          style={styles.input}
-          placeholder="Document Ref"
-          value={documentRef}
-          onChangeText={setDocumentRef}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Due Date"
-          value={dueDate}
-          onChangeText={setDueDate}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Document Date"
-          value={documentDate}
-          onChangeText={setDocumentDate}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Amount"
-          value={amount}
-          onChangeText={setAmount}
-          keyboardType="numeric"
-        />
-      </View>
-
-      {/* Payment Mode Section */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Mode of Payment</Text>
-        <View style={styles.paymentModeContainer}>
-          <TouchableOpacity
-            style={[styles.paymentModeButton, paymentMode === 'Traite' && styles.activeButton]}
-            onPress={() => handlePaymentModeChange('Traite')}
-          >
-            <Text style={styles.buttonText}>Traite</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.paymentModeButton, paymentMode === 'Virement' && styles.activeButton]}
-            onPress={() => handlePaymentModeChange('Virement')}
-          >
-            <Text style={styles.buttonText}>Virement</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.paymentModeButton, paymentMode === 'Cheque' && styles.activeButton]}
-            onPress={() => handlePaymentModeChange('Cheque')}
-          >
-            <Text style={styles.buttonText}>Cheque</Text>
-          </TouchableOpacity>
+        {/* Form Section */}
+        <View style={styles.section}>
+          <TextInput
+            style={styles.input}
+            placeholder="Document Ref"
+            value={documentRef}
+            onChangeText={setDocumentRef}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Due Date"
+            value={dueDate}
+            onChangeText={setDueDate}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Document Date"
+            value={documentDate}
+            onChangeText={setDocumentDate}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Amount"
+            value={amount}
+            onChangeText={setAmount}
+            keyboardType="numeric"
+          />
         </View>
+
+        {/* Payment Mode Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Mode of Payment</Text>
+          <View style={styles.paymentModeContainer}>
+            <TouchableOpacity
+              style={[styles.paymentModeButton, paymentMode === 'Traite' && styles.activeButton]}
+              onPress={() => handlePaymentModeChange('Traite')}
+            >
+              <Text style={styles.buttonText}>Traite</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.paymentModeButton, paymentMode === 'Virement' && styles.activeButton]}
+              onPress={() => handlePaymentModeChange('Virement')}
+            >
+              <Text style={styles.buttonText}>Virement</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.paymentModeButton, paymentMode === 'Cheque' && styles.activeButton]}
+              onPress={() => handlePaymentModeChange('Cheque')}
+            >
+              <Text style={styles.buttonText}>Cheque</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Next Button */}
+        <TouchableOpacity style={styles.nextButton}>
+          <Text style={styles.nextButtonText}>Next</Text>
+        </TouchableOpacity>
       </View>
 
-      {/* Next Button */}
-      <TouchableOpacity style={styles.nextButton}>
-        <Text style={styles.nextButtonText}>Next</Text>
-      </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    paddingBottom: 110,
+  },
   container: {
     flex: 1,
     padding: 20,

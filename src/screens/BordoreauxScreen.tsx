@@ -1,239 +1,232 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, TextInput, FlatList } from 'react-native';
+import DatePicker from 'react-native-date-picker'
+const { height } = Dimensions.get('window');
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../App';
+import { ScrollView } from 'react-native-gesture-handler';
 
-const BordoreauxFormScreen = () => {
-  const [progress, setProgress] = useState(1); // Example progress (out of 10)
-  const [documentType, setDocumentType] = useState('Facture');
-  const [paymentMode, setPaymentMode] = useState('');
-  const [documentRef, setDocumentRef] = useState('');
-  const [dueDate, setDueDate] = useState('');
-  const [documentDate, setDocumentDate] = useState('');
-  const [amount, setAmount] = useState('');
+const BordoreauxScreen: React.FC = () => {
+  const [totalAmount, setTotalAmount] = useState('1000000000');
+  const [selectedYear, setSelectedYear] = useState(2024);
+  const flatListRef = useRef<FlatList<number>>(null);
+  const [documentCount, setDocumentCount] = useState(0);
+  const [date, setDate] = useState(new Date())
+  const [open, setOpen] = useState(false)
+  type VerifyScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+  const navigation = useNavigation<VerifyScreenNavigationProp>();
 
-  const handleDocumentTypeChange = (type: any) => {
-    setDocumentType(type);
+  const incrementCount = () => setDocumentCount(prev => prev + 1);
+  const decrementCount = () => setDocumentCount(prev => Math.max(0, prev - 1));
+  const years = Array.from({ length: 21 }, (_, i) => selectedYear - 10 + i);
+
+  const handleGoToForm = () => {
+    navigation.navigate('BordoreauxForm'); 
   };
+  useEffect(() => {
+    const selectedYearIndex = years.findIndex((year) => year === selectedYear);
+    if (flatListRef.current) {
+      flatListRef.current.scrollToIndex({
+        index: selectedYearIndex,
+        animated: false,
+        viewPosition: 0.5, // Center the item in the viewport
+      });
+    }
+  }, [selectedYear]);
 
-  const handlePaymentModeChange = (mode:any) => {
-    setPaymentMode(mode);
-  };
+  const renderYear = ({ item }: { item: number }) => (
+    <TouchableOpacity onPress={() => setSelectedYear(item)}>
+      <Text style={[styles.yearText, item === selectedYear && styles.selectedYear]}>
+        {item}
+      </Text>
+    </TouchableOpacity>
+  );
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollViewContent}>
-
-      <View style={styles.container}>
-        {/* Header Section */}
-        {/* <View style={styles.header}>
-          <Text style={styles.headerTitle}>Bordereau</Text>
-          <Text style={styles.subHeader}>lorem is aurn upsetir loremium episium</Text>
-        </View> */}
-
-        {/* Progress Section */}
-        <View style={styles.progressContainer}>
-          <Text style={styles.progressText}>{progress}/10 left to complete</Text>
-          <Text style={styles.amountText}>50,000,000</Text>
-          <View style={styles.progressBarBackground}>
-            <View style={[styles.progressBarFill, { width: `${(progress / 10) * 100}%` }]} />
-          </View>
-          <Text style={styles.smallText}>10,000,000</Text>
-        </View>
-
-        {/* Document Type Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Type of document</Text>
-          <View style={styles.documentTypeContainer}>
-            <TouchableOpacity
-              style={[styles.documentTypeButton, documentType === 'Facture' && styles.activeButton]}
-              onPress={() => handleDocumentTypeChange('Facture')}
-            >
-              <Text style={styles.buttonText}>Facture</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.documentTypeButton, documentType === 'Bon de commande' && styles.activeButton]}
-              onPress={() => handleDocumentTypeChange('Bon de commande')}
-            >
-              <Text style={styles.buttonText}>Bon de commande</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.documentTypeButton, documentType === 'Marche' && styles.activeButton]}
-              onPress={() => handleDocumentTypeChange('Marche')}
-            >
-              <Text style={styles.buttonText}>Marche</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* Form Section */}
-        <View style={styles.section}>
-          <TextInput
-            style={styles.input}
-            placeholder="Document Ref"
-            value={documentRef}
-            onChangeText={setDocumentRef}
+    <ScrollView style={styles.container}>
+         
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Total amount</Text>
+        <TextInput
+          style={styles.input}
+          value={totalAmount}
+          onChangeText={setTotalAmount}
+          keyboardType="numeric"
+        />
+      </View>
+              {/* Bordereau Date */}
+          <TouchableOpacity
+          style={[styles.inputContainer]}
+          onPress={()=>setOpen(true)}
+        >
+          <Text style={styles.label}>Bordereau date</Text>
+          <Text style={styles.input}>{date.toDateString()}</Text>
+          <DatePicker
+           modal
+           open={open}
+           date={date}
+           mode='date'
+           onConfirm={(date) => {
+             setOpen(false)
+             setDate(date)
+           }}
+           onCancel={() => {
+             setOpen(false)
+           }}
           />
-          <TextInput
-            style={styles.input}
-            placeholder="Due Date"
-            value={dueDate}
-            onChangeText={setDueDate}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Document Date"
-            value={documentDate}
-            onChangeText={setDocumentDate}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Amount"
-            value={amount}
-            onChangeText={setAmount}
-            keyboardType="numeric"
-          />
-        </View>
-
-        {/* Payment Mode Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Mode of Payment</Text>
-          <View style={styles.paymentModeContainer}>
-            <TouchableOpacity
-              style={[styles.paymentModeButton, paymentMode === 'Traite' && styles.activeButton]}
-              onPress={() => handlePaymentModeChange('Traite')}
-            >
-              <Text style={styles.buttonText}>Traite</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.paymentModeButton, paymentMode === 'Virement' && styles.activeButton]}
-              onPress={() => handlePaymentModeChange('Virement')}
-            >
-              <Text style={styles.buttonText}>Virement</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.paymentModeButton, paymentMode === 'Cheque' && styles.activeButton]}
-              onPress={() => handlePaymentModeChange('Cheque')}
-            >
-              <Text style={styles.buttonText}>Cheque</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* Next Button */}
-        <TouchableOpacity style={styles.nextButton}>
-          <Text style={styles.nextButtonText}>Next</Text>
         </TouchableOpacity>
+         
+
+
+      {/* Bordereau Date and Documents Number Side by Side */}
+      <View style={styles.horizontalContainer}>
+
+             {/* Bordereau Year */}
+      <View style={[styles.yearContainer,, styles.flexItem]}>
+        <Text style={styles.label}>Bordereau year</Text>
+        <FlatList
+          ref={flatListRef}
+          data={years}
+          keyExtractor={(item) => item.toString()}
+          renderItem={renderYear}
+          contentContainerStyle={styles.yearSelector}
+          showsVerticalScrollIndicator={false}
+          getItemLayout={(data, index) => ({
+            length: 50, // Height of each item
+            offset: 50 * index, // Position of each item
+            index,
+          })}
+          onScrollToIndexFailed={(info) => {
+            console.error('Scroll to index failed', info);
+          }}
+        />
       </View>
 
+        {/* Documents Number */}
+        <View style={[styles.counterContainer, styles.flexItem]}>
+          <Text style={styles.label}>Documents number</Text>
+          <View style={styles.counter}>
+            <TouchableOpacity onPress={decrementCount} style={styles.counterButton}>
+              <Text style={styles.counterText}>-</Text>
+            </TouchableOpacity>
+            <Text style={styles.documentCount}>{documentCount}</Text>
+            <TouchableOpacity onPress={incrementCount} style={styles.counterButton}>
+              <Text style={styles.counterText}>+</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+
+ 
+
+      {/* Save Button */}
+      <TouchableOpacity style={styles.saveButton} onPress={handleGoToForm}>
+        <Text style={styles.saveButtonText} >Save</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollViewContent: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    paddingBottom: 110,
-  },
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#fff',
+    padding: 16,
+    paddingTop: 80
+    
   },
-  header: {
-    alignItems: 'center',
-    marginBottom: 20,
+  horizontalContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
   },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
+  inputContainer: {
+    backgroundColor: '#f0f4ff',
+    padding: 16,
+    borderRadius: 10,
+    marginBottom: 16,
   },
-  subHeader: {
+  datePicker: {
+    width: '100%',
+  },
+  flexItem: {
+    flex: 1,
+    marginHorizontal: 8, // Add some margin between the two items
+  },
+  label: {
     fontSize: 14,
-    color: '#ddd',
-  },
-  progressContainer: {
-    marginBottom: 20,
-  },
-  progressText: {
-    fontSize: 16,
     color: '#333',
-  },
-  amountText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#000',
-    textAlign: 'right',
-  },
-  progressBarBackground: {
-    height: 10,
-    backgroundColor: '#e0e0e0',
-    borderRadius: 5,
-    marginVertical: 10,
-  },
-  progressBarFill: {
-    height: 10,
-    backgroundColor: '#4caf50',
-    borderRadius: 5,
-  },
-  smallText: {
-    fontSize: 12,
-    color: '#666',
-  },
-  section: {
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  documentTypeContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  documentTypeButton: {
-    flex: 1,
-    padding: 10,
-    marginHorizontal: 5,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  paymentModeContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  paymentModeButton: {
-    flex: 1,
-    padding: 10,
-    marginHorizontal: 5,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  activeButton: {
-    backgroundColor: '#4caf50',
-  },
-  buttonText: {
-    color: '#000',
+    marginBottom: 8,
   },
   input: {
-    borderWidth: 1,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 16,
     borderColor: '#ddd',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
+    borderWidth: 1,
   },
-  nextButton: {
-    backgroundColor: '#4caf50',
-    padding: 15,
-    borderRadius: 5,
+  yearContainer: {
+    backgroundColor: '#f0f4ff',
+    padding: 16,
+    borderRadius: 10,
+    marginBottom: 16,
+    height: 200, // Adjust height as needed
+  },
+  yearSelector: {
     alignItems: 'center',
   },
-  nextButtonText: {
+  yearText: {
+    color: '#999',
+    fontSize: 18,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  selectedYear: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#000',
+    borderBottomWidth: 2,
+    borderBottomColor: '#000',
+  },
+  counterText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  counterContainer: {
+    backgroundColor: '#f0f4ff',
+    padding: 16,
+    borderRadius: 10,
+    marginBottom: 16,
+  },
+  counter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    paddingTop: 20
+  },
+  documentCount: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginHorizontal: 16,
+  },
+  counterButton: {
+    backgroundColor: '#e0e0e0',
+    padding: 16,
+    borderRadius: 10,
+  },
+  saveButton: {
+    backgroundColor: '#007bff',
+    padding: 16,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  saveButtonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 
-export default BordoreauxFormScreen;
+export default BordoreauxScreen;

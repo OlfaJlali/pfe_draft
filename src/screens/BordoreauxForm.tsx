@@ -1,8 +1,18 @@
+import { RouteProp } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
+import { RootStackParamList } from '../App';
 
-const BordoreauxFormScreen = () => {
-  const [progress, setProgress] = useState(1); // Example progress (out of 10)
+type BordoreauxFormRouteProp = RouteProp<RootStackParamList, 'BordoreauxForm'>;
+
+interface BordereauxFormProps {
+  route: BordoreauxFormRouteProp;
+}
+
+const BordoreauxFormScreen: React.FC<BordereauxFormProps> = ({ route }) => {
+  const { totalAmount, date, selectedYear, documentCount } = route.params;
+  const [progress, setProgress] = useState(1);
+  const [documentsData, setDocumentsData] = useState<any[]>([]);
   const [documentType, setDocumentType] = useState('Facture');
   const [paymentMode, setPaymentMode] = useState('');
   const [documentRef, setDocumentRef] = useState('');
@@ -10,35 +20,55 @@ const BordoreauxFormScreen = () => {
   const [documentDate, setDocumentDate] = useState('');
   const [amount, setAmount] = useState('');
 
-  const handleDocumentTypeChange = (type: any) => {
-    setDocumentType(type);
-  };
+  const handleDocumentTypeChange = (type: string) => setDocumentType(type);
+  const handlePaymentModeChange = (mode: string) => setPaymentMode(mode);
 
-  const handlePaymentModeChange = (mode:any) => {
-    setPaymentMode(mode);
+  const handleNext = () => {
+    // Save the current document data
+    const newDocument = {
+      documentType,
+      paymentMode,
+      documentRef,
+      dueDate,
+      documentDate,
+      amount,
+    };
+
+    // Update documents array
+    setDocumentsData((prev) => [...prev, newDocument]);
+
+    // Increment progress
+    if (progress < documentCount) {
+      setProgress(progress + 1);
+      // Clear form fields for next document entry
+      setDocumentType('Facture');
+      setPaymentMode('');
+      setDocumentRef('');
+      setDueDate('');
+      setDocumentDate('');
+      setAmount('');
+    } else {
+      Alert.alert('All documents are completed');
+      // You can trigger a save or navigate elsewhere here
+      const allDocuments = [...documentsData, newDocument]; // Manually append the new document to the previous ones
+    console.log('All documents:', allDocuments);
+    Alert.alert('All documents are completed');
+
+    }
   };
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
-
       <View style={styles.container}>
-        {/* Header Section */}
-        {/* <View style={styles.header}>
-          <Text style={styles.headerTitle}>Bordereau</Text>
-          <Text style={styles.subHeader}>lorem is aurn upsetir loremium episium</Text>
-        </View> */}
-
         {/* Progress Section */}
         <View style={styles.progressContainer}>
-          <Text style={styles.progressText}>{progress}/10 left to complete</Text>
-          <Text style={styles.amountText}>50,000,000</Text>
+          <Text style={styles.progressText}>{progress}/{documentCount} documents completed</Text>
           <View style={styles.progressBarBackground}>
-            <View style={[styles.progressBarFill, { width: `${(progress / 10) * 100}%` }]} />
+            <View style={[styles.progressBarFill, { width: `${(progress / documentCount) * 100}%` }]} />
           </View>
-          <Text style={styles.smallText}>10,000,000</Text>
         </View>
 
-        {/* Document Type Section */}
+        {/* Document Form */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Type of document</Text>
           <View style={styles.documentTypeContainer}>
@@ -63,7 +93,7 @@ const BordoreauxFormScreen = () => {
           </View>
         </View>
 
-        {/* Form Section */}
+        {/* Form Inputs */}
         <View style={styles.section}>
           <TextInput
             style={styles.input}
@@ -118,11 +148,10 @@ const BordoreauxFormScreen = () => {
         </View>
 
         {/* Next Button */}
-        <TouchableOpacity style={styles.nextButton}>
+        <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
           <Text style={styles.nextButtonText}>Next</Text>
         </TouchableOpacity>
       </View>
-
     </ScrollView>
   );
 };
@@ -138,31 +167,12 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#F9F9F9',
   },
-  header: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  subHeader: {
-    fontSize: 14,
-    color: '#ddd',
-  },
   progressContainer: {
     marginBottom: 20,
   },
   progressText: {
     fontSize: 16,
     color: '#333',
-  },
-  amountText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#000',
-    textAlign: 'right',
   },
   progressBarBackground: {
     height: 10,
@@ -174,10 +184,6 @@ const styles = StyleSheet.create({
     height: 10,
     backgroundColor: '#4caf50',
     borderRadius: 5,
-  },
-  smallText: {
-    fontSize: 12,
-    color: '#666',
   },
   section: {
     marginBottom: 20,
@@ -199,6 +205,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
   },
+  activeButton: {
+    backgroundColor: '#4caf50',
+  },
   paymentModeContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -210,12 +219,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     borderRadius: 5,
     alignItems: 'center',
-  },
-  activeButton: {
-    backgroundColor: '#4caf50',
-  },
-  buttonText: {
-    color: '#000',
   },
   input: {
     borderWidth: 1,
@@ -229,6 +232,9 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 5,
     alignItems: 'center',
+  },
+  buttonText: {
+    color: '#000',
   },
   nextButtonText: {
     color: '#fff',

@@ -22,8 +22,14 @@ const BordoreauxScreen: React.FC = () => {
   const years = Array.from({ length: 21 }, (_, i) => selectedYear - 10 + i);
 
   const handleGoToForm = () => {
-    navigation.navigate('BordoreauxForm'); 
+    navigation.navigate('BordoreauxForm', {
+      totalAmount,
+      date,
+      selectedYear,
+      documentCount,  
+    });
   };
+  
   useEffect(() => {
     const selectedYearIndex = years.findIndex((year) => year === selectedYear);
     if (flatListRef.current) {

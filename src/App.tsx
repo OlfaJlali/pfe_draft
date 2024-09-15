@@ -14,11 +14,16 @@ import BordoreauxFormScreen from './screens/BordoreauxForm';
 
 export type RootStackParamList = {
   SignIn: undefined;
-  Home: undefined; 
+  Home: undefined;
   ForgotPassword: undefined;
   VerifyScreen: undefined;
   Bordoreaux: undefined;
-  BordoreauxForm: undefined;
+  BordoreauxForm: {
+    totalAmount: string;
+    date: Date;
+    selectedYear: number;
+    documentCount: number;
+  };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();

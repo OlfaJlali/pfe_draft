@@ -1,7 +1,8 @@
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
 import { RootStackParamList } from '../App';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 type BordoreauxFormRouteProp = RouteProp<RootStackParamList, 'BordoreauxForm'>;
 
@@ -19,6 +20,9 @@ const BordoreauxFormScreen: React.FC<BordereauxFormProps> = ({ route }) => {
   const [dueDate, setDueDate] = useState('');
   const [documentDate, setDocumentDate] = useState('');
   const [amount, setAmount] = useState('');
+  type VerifyScreenNavigationProp = StackNavigationProp<RootStackParamList, 'BordoreauxForm'>;
+  const navigation = useNavigation<VerifyScreenNavigationProp>();
+
 
   const handleDocumentTypeChange = (type: string) => setDocumentType(type);
   const handlePaymentModeChange = (mode: string) => setPaymentMode(mode);
@@ -52,7 +56,7 @@ const BordoreauxFormScreen: React.FC<BordereauxFormProps> = ({ route }) => {
       // You can trigger a save or navigate elsewhere here
       const allDocuments = [...documentsData, newDocument]; // Manually append the new document to the previous ones
     console.log('All documents:', allDocuments);
-    Alert.alert('All documents are completed');
+    navigation.navigate('Congratulations');
 
     }
   };

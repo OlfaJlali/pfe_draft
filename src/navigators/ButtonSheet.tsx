@@ -24,6 +24,9 @@ const ButtonSheet: React.FC = () => {
   const goToBordoreaux = () => {
     navigation.navigate('Bordoreaux'); // Navigate to the Bordoreaux screen
   };
+  const goToProfile = () => {
+    navigation.navigate('Profile')
+  }
   return (
     <Animated.View style={[styles.bottomSheet, { height: animatedHeight }]}>
       <View style={styles.buttonRow}>
@@ -31,7 +34,7 @@ const ButtonSheet: React.FC = () => {
           <Text style={styles.buttonText}>Bourderaux</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={goToProfile}>
           <Text style={styles.buttonText}>Accounts</Text>
         </TouchableOpacity>
 

@@ -12,6 +12,8 @@ import { StyleSheet, View } from 'react-native';
 import BordoreauxScreen from './screens/BordoreauxScreen'
 import BordoreauxFormScreen from './screens/BordoreauxForm';
 import CongratulationsScreen from './screens/CongratulationScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import MyAccountScreen from './screens/MyAccountScreen';
 
 // Inside the Stack.Navigator
 
@@ -22,6 +24,8 @@ export type RootStackParamList = {
   VerifyScreen: undefined;
   Bordoreaux: undefined;
   Congratulations: undefined;
+  Profile: undefined;
+  MyAccount: undefined
   BordoreauxForm: {
     totalAmount: string;
     date: Date;
@@ -44,6 +48,8 @@ const App: React.FC = () => {
           <Stack.Screen name="Bordoreaux" component={BordoreauxScreen} options={{ headerShown: false }} />
           <Stack.Screen name="BordoreauxForm" component={BordoreauxFormScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Congratulations" component={CongratulationsScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="MyAccount" component={MyAccountScreen} options={{ headerShown: false }} />
 
         </Stack.Navigator>
         <ConditionalButtonSheet />

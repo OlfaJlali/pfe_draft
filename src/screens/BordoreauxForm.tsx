@@ -52,8 +52,6 @@ const BordoreauxFormScreen: React.FC<BordereauxFormProps> = ({ route }) => {
       setDocumentDate('');
       setAmount('');
     } else {
-      Alert.alert('All documents are completed');
-      // You can trigger a save or navigate elsewhere here
       const allDocuments = [...documentsData, newDocument]; // Manually append the new document to the previous ones
     console.log('All documents:', allDocuments);
     navigation.navigate('Congratulations');

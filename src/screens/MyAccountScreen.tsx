@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const MyAccountScreen = () => {
     
   // Example states to hold user info
-  const [name, setName] = useState('Donye Collins');
+  const [name, setName] = useState('Jlali Olfa');
   const [email, setEmail] = useState('Louis04real@gmail.com');
-  const [phoneNumber, setPhoneNumber] = useState('+23408146185683');
+  const [phoneNumber, setPhoneNumber] = useState('+21652693684');
 
   const handleSave = () => {
     // Implement save logic here
@@ -15,14 +15,10 @@ const MyAccountScreen = () => {
   };
 
   return (
+     <SafeAreaView style={styles.safeAreaContainer} >
     <View style={styles.container}>
       {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton}>
-          <Icon name="chevron-left" size={20} color="blue" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>My Account</Text>
-      </View>
+
 
       {/* Profile Image */}
       <View style={styles.profileContainer}>
@@ -71,7 +67,8 @@ const MyAccountScreen = () => {
       <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
         <Text style={styles.saveButtonText}>Save</Text>
       </TouchableOpacity>
-    </View>
+      </View>
+      </SafeAreaView>
   );
 };
 
@@ -79,6 +76,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: '#fff',
+  },
+  safeAreaContainer: {
+    flex: 1,
     backgroundColor: '#fff',
   },
   header: {

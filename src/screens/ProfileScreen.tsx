@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { RootStackParamList } from '../App';
 
@@ -11,8 +11,12 @@ const ProfileScreen: React.FC = () => {
     const handleGotoMyAccount = () => {
       navigation.navigate('MyAccount'); 
     };
+    const handleGotoSettings = () => {
+    navigation.navigate('Settings');
+  }
   
   return (
+    <SafeAreaView style={styles.safeAreaContainer} >
     <View style={styles.container}>
       {/* Profile Section */}
       <View style={styles.profileContainer}>
@@ -20,8 +24,8 @@ const ProfileScreen: React.FC = () => {
           style={styles.profileImage}
           source={{ uri: 'https://gravatar.com/avatar/828a6fbd5f1da66fd6ef3830e005f43a?s=400&d=mp&r=x' }} // Replace with the actual image source
         />
-        <Text style={styles.nameText}>Donye Collins</Text>
-        <Text style={styles.emailText}>iamcollinsdonye@gmail.com</Text>
+        <Text style={styles.nameText}>Jlali Olfa</Text>
+        <Text style={styles.emailText}>olfajlali@gmail.com</Text>
       </View>
 
       {/* Menu Section */}
@@ -33,7 +37,7 @@ const ProfileScreen: React.FC = () => {
           <Text style={styles.menuText}>My Account</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuItem}>
+        <TouchableOpacity style={styles.menuItem} onPress={handleGotoSettings}>
           <View style={styles.iconContainer}>
           < Icon name="gear" size={30} color="blue" />
           </View>
@@ -54,7 +58,8 @@ const ProfileScreen: React.FC = () => {
           <Text style={[styles.menuText, styles.logoutText]}>Logout</Text>
         </TouchableOpacity>
       </View>
-    </View>
+      </View>
+       </SafeAreaView>
   );
 };
 
@@ -101,6 +106,10 @@ const styles = StyleSheet.create({
     height: 30,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  safeAreaContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
   icon: {
     width: 25,

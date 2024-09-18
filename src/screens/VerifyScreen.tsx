@@ -1,7 +1,15 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { RootStackParamList } from '../App';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 const VerifyScreen: React.FC = () => {
+  type VerifyScreenNavigationProp = StackNavigationProp<RootStackParamList, 'VerifyScreen'>;
+  const navigation = useNavigation<VerifyScreenNavigationProp>();
+
+
+
   const [code, setCode] = useState(['', '', '', '']);
   const inputRefs = useRef<Array<TextInput | null>>([]); 
   const handleCodeChange = (value: string, index: number) => {
@@ -14,6 +22,8 @@ const VerifyScreen: React.FC = () => {
   };
   const handleVerifyCode = () => {
     console.log('Verification code entered:', code.join(''));
+    navigation.navigate('ChangePasswordScreen'); 
+
   };
   return (
     <View style={styles.container}>

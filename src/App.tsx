@@ -14,18 +14,28 @@ import BordoreauxFormScreen from './screens/BordoreauxForm';
 import CongratulationsScreen from './screens/CongratulationScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import MyAccountScreen from './screens/MyAccountScreen';
+import SettingsScreen from './screens/SettingsScreens';
+import ResetPasswordScreen from './screens/ResetPasswordScreen';
+import NotificationsScreen from './screens/NotificationsScreen';
+import OnboardingScreen from './screens/OnBoardingScreen';
+import ChangePasswordScreen from './screens/ChangePassword';
 
 // Inside the Stack.Navigator
 
 export type RootStackParamList = {
+  Onboarding: undefined;
   SignIn: undefined;
   Home: undefined;
   ForgotPassword: undefined;
   VerifyScreen: undefined;
+  ChangePasswordScreen: undefined;
   Bordoreaux: undefined;
   Congratulations: undefined;
   Profile: undefined;
-  MyAccount: undefined
+  MyAccount: undefined;
+  Settings: undefined;
+  ResetPassword: undefined;
+  Notifications: undefined;
   BordoreauxForm: {
     totalAmount: string;
     date: Date;
@@ -40,7 +50,8 @@ const App: React.FC = () => {
   return (
     <NavigationContainer>
       <View style={styles.container}>
-        <Stack.Navigator initialRouteName="SignIn">
+        <Stack.Navigator initialRouteName="Onboarding">
+          <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
           <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
           <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ headerShown: false }} />
@@ -49,7 +60,11 @@ const App: React.FC = () => {
           <Stack.Screen name="BordoreauxForm" component={BordoreauxFormScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Congratulations" component={CongratulationsScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="MyAccount" component={MyAccountScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="MyAccount" component={MyAccountScreen} options={{  title: 'My Account' }} />
+          <Stack.Screen  name="Settings" component={SettingsScreen} options={{  title: 'General' }} />
+          <Stack.Screen  name="ChangePasswordScreen" component={ChangePasswordScreen} options={{  headerShown: false }} />
+        <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} options={{ title: 'Password' }} />
+        <Stack.Screen name="Notifications" component={NotificationsScreen} options={{ title: 'Notifications' }} />
 
         </Stack.Navigator>
         <ConditionalButtonSheet />

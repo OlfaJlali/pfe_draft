@@ -1,25 +1,43 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, TextInput, FlatList } from 'react-native';
-import DatePicker from 'react-native-date-picker'
-const { height } = Dimensions.get('window');
-import { StackNavigationProp } from '@react-navigation/stack';
+import React, { useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../App';
-import { ScrollView } from 'react-native-gesture-handler';
+import { useBordereauxForm } from '../hooks/useBordereauxForm';
+import DateInput from '../components/DateInput';
+import { ScrollView, TextInput } from 'react-native-gesture-handler';
+import { Input } from '../components/TextInput';
+const { height } = Dimensions.get('window');
+type VerifyScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
-const BordoreauxScreen: React.FC = () => {
-  const [totalAmount, setTotalAmount] = useState('1000000000');
-  const [selectedYear, setSelectedYear] = useState(2024);
-  const flatListRef = useRef<FlatList<number>>(null);
-  const [documentCount, setDocumentCount] = useState(0);
-  const [date, setDate] = useState(new Date())
-  const [open, setOpen] = useState(false)
-  type VerifyScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+const BordereauxScreen: React.FC = () => {
   const navigation = useNavigation<VerifyScreenNavigationProp>();
+  const {
+    totalAmount,
+    setTotalAmount,
+    selectedYear,
+    setSelectedYear,
+    documentCount,
+    incrementCount,
+    decrementCount,
+    date,
+    isDatePickerOpen,
+    closeDatePicker,
+    setDate,
+    flatListRef,
+    years,
+  } = useBordereauxForm();
 
-  const incrementCount = () => setDocumentCount(prev => prev + 1);
-  const decrementCount = () => setDocumentCount(prev => Math.max(0, prev - 1));
-  const years = Array.from({ length: 21 }, (_, i) => selectedYear - 10 + i);
+useEffect(() => {
+  const selectedYearIndex = years.findIndex((year) => year === selectedYear);
+  if (flatListRef.current) {
+    flatListRef.current.scrollToIndex({
+      index: selectedYearIndex,
+      animated: false,
+      viewPosition: 1.5, 
+    });
+  }
+}, [selectedYear]);
 
   const handleGoToForm = () => {
     navigation.navigate('BordoreauxForm', {
@@ -29,18 +47,6 @@ const BordoreauxScreen: React.FC = () => {
       documentCount,  
     });
   };
-  
-  useEffect(() => {
-    const selectedYearIndex = years.findIndex((year) => year === selectedYear);
-    if (flatListRef.current) {
-      flatListRef.current.scrollToIndex({
-        index: selectedYearIndex,
-        animated: false,
-        viewPosition: 0.5, // Center the item in the viewport
-      });
-    }
-  }, [selectedYear]);
-
   const renderYear = ({ item }: { item: number }) => (
     <TouchableOpacity onPress={() => setSelectedYear(item)}>
       <Text style={[styles.yearText, item === selectedYear && styles.selectedYear]}>
@@ -50,8 +56,7 @@ const BordoreauxScreen: React.FC = () => {
   );
 
   return (
-    <ScrollView style={styles.container}>
-         
+    <View style={styles.container}>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Total amount</Text>
         <TextInput
@@ -59,57 +64,41 @@ const BordoreauxScreen: React.FC = () => {
           value={totalAmount}
           onChangeText={setTotalAmount}
           keyboardType="numeric"
+          
         />
       </View>
-              {/* Bordereau Date */}
-          <TouchableOpacity
-          style={[styles.inputContainer]}
-          onPress={()=>setOpen(true)}
-        >
-          <Text style={styles.label}>Bordereau date</Text>
-          <Text style={styles.input}>{date.toDateString()}</Text>
-          <DatePicker
-           modal
-           open={open}
-           date={date}
-           mode='date'
-           onConfirm={(date) => {
-             setOpen(false)
-             setDate(date)
-           }}
-           onCancel={() => {
-             setOpen(false)
-           }}
-          />
-        </TouchableOpacity>
-         
+      <DateInput
+        date={date}
+        open={isDatePickerOpen}
+        
+        onConfirm={(date: Date) => {
+          setDate(date);
+          closeDatePicker();
+        }}
+        onCancel={closeDatePicker}
+      />
 
-
-      {/* Bordereau Date and Documents Number Side by Side */}
       <View style={styles.horizontalContainer}>
+        <View style={[styles.yearContainer, styles.flexItem]}>
+          <Text style={styles.label}>Bordereau year</Text>
+          <FlatList
+            ref={flatListRef}
+            data={years}
+            keyExtractor={(item) => item.toString()}
+            renderItem={renderYear}
+            contentContainerStyle={styles.yearSelector}
+            showsVerticalScrollIndicator={false}
+            getItemLayout={(data, index) => ({
+              length: 50,
+              offset: 55 * index,
+              index,
+            })}
+            onScrollToIndexFailed={(info) => {
+              console.error('Scroll to index failed', info);
+            }}
+          />
+        </View>
 
-             {/* Bordereau Year */}
-      <View style={[styles.yearContainer,, styles.flexItem]}>
-        <Text style={styles.label}>Bordereau year</Text>
-        <FlatList
-          ref={flatListRef}
-          data={years}
-          keyExtractor={(item) => item.toString()}
-          renderItem={renderYear}
-          contentContainerStyle={styles.yearSelector}
-          showsVerticalScrollIndicator={false}
-          getItemLayout={(data, index) => ({
-            length: 50, // Height of each item
-            offset: 50 * index, // Position of each item
-            index,
-          })}
-          onScrollToIndexFailed={(info) => {
-            console.error('Scroll to index failed', info);
-          }}
-        />
-      </View>
-
-        {/* Documents Number */}
         <View style={[styles.counterContainer, styles.flexItem]}>
           <Text style={styles.label}>Documents number</Text>
           <View style={styles.counter}>
@@ -124,13 +113,10 @@ const BordoreauxScreen: React.FC = () => {
         </View>
       </View>
 
- 
-
-      {/* Save Button */}
       <TouchableOpacity style={styles.saveButton} onPress={handleGoToForm}>
-        <Text style={styles.saveButtonText} >Save</Text>
+        <Text style={styles.saveButtonText}>Save</Text>
       </TouchableOpacity>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -139,8 +125,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     padding: 16,
-    paddingTop: 80
-    
+    paddingTop: 40,
   },
   horizontalContainer: {
     flexDirection: 'row',
@@ -152,13 +137,6 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 10,
     marginBottom: 16,
-  },
-  datePicker: {
-    width: '100%',
-  },
-  flexItem: {
-    flex: 1,
-    marginHorizontal: 8, // Add some margin between the two items
   },
   label: {
     fontSize: 14,
@@ -178,7 +156,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 10,
     marginBottom: 16,
-    height: 200, // Adjust height as needed
+    height: 200,
   },
   yearSelector: {
     alignItems: 'center',
@@ -210,7 +188,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    paddingTop: 20
+    paddingTop: 20,
   },
   documentCount: {
     fontSize: 24,
@@ -228,6 +206,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
   },
+  flexItem: {
+    flex: 1,
+    marginHorizontal: 8,
+  },
   saveButtonText: {
     color: '#fff',
     fontSize: 18,
@@ -235,4 +217,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BordoreauxScreen;
+export default BordereauxScreen;

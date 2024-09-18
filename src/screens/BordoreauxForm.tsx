@@ -1,8 +1,9 @@
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert, SafeAreaView } from 'react-native';
 import { RootStackParamList } from '../App';
 import { StackNavigationProp } from '@react-navigation/stack';
+import DateInput from '../components/DateInput';
 
 type BordoreauxFormRouteProp = RouteProp<RootStackParamList, 'BordoreauxForm'>;
 
@@ -15,13 +16,19 @@ const BordoreauxFormScreen: React.FC<BordereauxFormProps> = ({ route }) => {
   const [progress, setProgress] = useState(1);
   const [documentsData, setDocumentsData] = useState<any[]>([]);
   const [documentType, setDocumentType] = useState('Facture');
-  const [paymentMode, setPaymentMode] = useState('');
+  const [paymentMode, setPaymentMode] = useState('Traite');
   const [documentRef, setDocumentRef] = useState('');
-  const [dueDate, setDueDate] = useState('');
-  const [documentDate, setDocumentDate] = useState('');
+  const [dueDate, setDueDate] = useState(new Date());
+  const [documentDate, setDocumentDate] = useState(new Date);
   const [amount, setAmount] = useState('');
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
+  
+  const [isduedatePickerOpen, setIsduedatePickerOpen] = useState(false)
+
   type VerifyScreenNavigationProp = StackNavigationProp<RootStackParamList, 'BordoreauxForm'>;
   const navigation = useNavigation<VerifyScreenNavigationProp>();
+  const closeDatePicker = () => setIsDatePickerOpen(false);
+  const closedueDatePicker = () => setIsduedatePickerOpen(false);
 
 
   const handleDocumentTypeChange = (type: string) => setDocumentType(type);
@@ -46,10 +53,10 @@ const BordoreauxFormScreen: React.FC<BordereauxFormProps> = ({ route }) => {
       setProgress(progress + 1);
       // Clear form fields for next document entry
       setDocumentType('Facture');
-      setPaymentMode('');
+      setPaymentMode('Traite');
       setDocumentRef('');
-      setDueDate('');
-      setDocumentDate('');
+      setDueDate(new Date());
+      setDocumentDate(new Date());
       setAmount('');
     } else {
       const allDocuments = [...documentsData, newDocument]; // Manually append the new document to the previous ones
@@ -60,6 +67,7 @@ const BordoreauxFormScreen: React.FC<BordereauxFormProps> = ({ route }) => {
   };
 
   return (
+   <SafeAreaView style={styles.safeAreaContainer}>
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.container}>
         {/* Progress Section */}
@@ -103,18 +111,26 @@ const BordoreauxFormScreen: React.FC<BordereauxFormProps> = ({ route }) => {
             value={documentRef}
             onChangeText={setDocumentRef}
           />
-          <TextInput
-            style={styles.input}
-            placeholder="Due Date"
-            value={dueDate}
-            onChangeText={setDueDate}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Document Date"
-            value={documentDate}
-            onChangeText={setDocumentDate}
-          />
+          <DateInput
+        date={dueDate}
+        open={isduedatePickerOpen}
+        
+        onConfirm={(date: Date) => {
+          setDueDate(date);
+          closedueDatePicker();
+        }}
+        onCancel={closedueDatePicker}
+      />
+                <DateInput
+        date={documentDate}
+        open={isDatePickerOpen}
+        
+        onConfirm={(date: Date) => {
+          setDocumentDate(date);
+          closeDatePicker();
+        }}
+        onCancel={closeDatePicker}
+      />
           <TextInput
             style={styles.input}
             placeholder="Amount"
@@ -154,7 +170,8 @@ const BordoreauxFormScreen: React.FC<BordereauxFormProps> = ({ route }) => {
           <Text style={styles.nextButtonText}>Next</Text>
         </TouchableOpacity>
       </View>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView> 
   );
 };
 
@@ -184,8 +201,12 @@ const styles = StyleSheet.create({
   },
   progressBarFill: {
     height: 10,
-    backgroundColor: '#4caf50',
+    backgroundColor: '#007BFF',
     borderRadius: 5,
+  },
+  safeAreaContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
   section: {
     marginBottom: 20,
@@ -208,7 +229,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   activeButton: {
-    backgroundColor: '#4caf50',
+    backgroundColor: '#007BFF',
   },
   paymentModeContainer: {
     flexDirection: 'row',
@@ -230,7 +251,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   nextButton: {
-    backgroundColor: '#4caf50',
+    backgroundColor: '#007BFF',
     padding: 15,
     borderRadius: 5,
     alignItems: 'center',

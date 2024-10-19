@@ -3,27 +3,7 @@ import { SafeAreaView, FlatList, StatusBar } from 'react-native';
 import Slide from '../components/Slide';
 import Footer from '../components/Footer';
 import { useOnboarding } from '../hooks/useOnboarding';
-import { SlideType } from '../types/onBoardingTypes';
-const slides: SlideType[] = [
-  {
-    id: '1',
-    image: require('../../assets/men1.png'),
-    title: 'Best Digital Solution',
-    subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  },
-  {
-    id: '2',
-    image: require('../../assets/men2.png'),
-    title: 'Achieve Your Goals',
-    subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  },
-  {
-    id: '3',
-    image: require('../../assets/men3.png'),
-    title: 'Increase Your Value',
-    subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  },
-];
+import { slides } from '../data/Slides';
 const OnboardingScreen = ({ navigation }: { navigation: any }) => {
   const { currentSlideIndex, ref, updateCurrentSlideIndex, goToNextSlide, skip } = useOnboarding(slides);
 

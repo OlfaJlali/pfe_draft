@@ -1,11 +1,12 @@
 import React from 'react';
-import { SafeAreaView, FlatList, View, Text } from 'react-native';
+import { SafeAreaView, FlatList, View, Text, ImageSourcePropType, Dimensions } from 'react-native';
 import { useTabState } from '../hooks/useTabState';
 import { homeScreenStyles } from '../styles/homeScreenStyles';
-import { Card } from '../components/Card';
 import { Tab } from '../components/Tab';
 import { ListItem } from '../components/ListItem';
-
+import CardsSliderItem from '../components/CardsSliderItem';
+import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
+import { CardsData } from '../data/Cards';
 const availableData = [
   { id: '1', code: 'C', label: 'Current Invoices', amount: '4332,123', color: 'green' },
   { id: '2', code: 'G', label: 'Guarantee fund', amount: '9049,000', color: 'black' },
@@ -18,25 +19,34 @@ const available2Data = [
   { id: '2', code: 'Y', label: 'Another Data 2', amount: '2000,000', color: 'black' },
 ];
 
-const HomeScreen: React.FC = () => {
+const HomeScreen  = () => {
   const { selectedTab, setSelectedTab } = useTabState<'available' | 'available2'>('available');
+  const scrollX = useSharedValue(0);
+  const onScrollHandler = useAnimatedScrollHandler({
+    onScroll:(e) => {
+      scrollX.value = e.contentOffset.x;
+    }
+  })
 
+
+  const Separator = () => <View style={{ width: 10 }} />; 
   return (
     <SafeAreaView style={homeScreenStyles.safeAreaContainer}>
-      {/* Top Cards */}
       <View style={homeScreenStyles.cardContainer}>
-        <Card
-          title="Contract N°: 001/2024"
-          amount="138 516,647 TND"
-        />
-        <Card
-          title="Another Card Info"
-          amount=""
-          style={homeScreenStyles.cardBlue}
+        <Animated.FlatList data={CardsData}
+          renderItem={({ item  , index}) => 
+          <CardsSliderItem 
+            item={item} 
+            index={index} 
+            scrollX={scrollX}
+          />}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        pagingEnabled
+        ItemSeparatorComponent={Separator}
+        onScroll={onScrollHandler}
         />
       </View>
-
-      {/* Tabs */}
       <View style={homeScreenStyles.tabContainer}>
         <Tab
           title="Available"
@@ -49,8 +59,6 @@ const HomeScreen: React.FC = () => {
           onPress={() => setSelectedTab('available2')}
         />
       </View>
-
-      {/* List */}
       <FlatList
         data={selectedTab === 'available' ? availableData : available2Data}
         renderItem={({ item }) => <ListItem item={item} />}

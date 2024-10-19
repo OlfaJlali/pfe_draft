@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
+import { Dimensions, Image, SafeAreaView, Text, View } from 'react-native';
 import { useSignIn } from '../hooks/useSignIn';
 import { Input } from '../components/TextInput';
 import { Button } from '../components/Button';
@@ -8,10 +8,12 @@ import { signInScreenStyles } from '../styles/signInScreenStyles';
 
 const SignInScreen: React.FC = () => {
   const { email, setEmail, password, setPassword, handleSignIn, handleForgotPassword } = useSignIn();
+  const {width} = Dimensions.get('window');
 
   return (
     <SafeAreaView style={signInScreenStyles.safeAreaContainer}>
       <Text style={signInScreenStyles.title}>Sign into your account</Text>
+      <Image source= {require('../../assets/login.png')} style={{ height: '50%', width: width }} />
       <View style={signInScreenStyles.centeredContainer}>
         <Input placeholder="Email" value={email} onChangeText={setEmail} keyboardType="email-address" />
         <Input placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry />

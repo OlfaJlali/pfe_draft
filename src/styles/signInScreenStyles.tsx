@@ -11,7 +11,7 @@ export const signInScreenStyles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 30,
     textAlign: 'center',
-    color: '#007BFF',
+    color: '#1591ea',
   },
   centeredContainer: {
     flex: 1, 

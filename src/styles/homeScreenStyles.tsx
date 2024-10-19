@@ -1,4 +1,5 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
+const { height , width} = Dimensions.get('window');
 
 export const homeScreenStyles = StyleSheet.create({
   safeAreaContainer: {
@@ -9,6 +10,7 @@ export const homeScreenStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     margin: 16,
+    height:height * 0.25,
   },
   card: {
     flex: 1,

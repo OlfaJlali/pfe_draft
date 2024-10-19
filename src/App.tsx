@@ -4,6 +4,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import AppNavigator from './navigators/AppNavigator';
 import ConditionalButtonSheet from './components/ConditionalButtonSheet';
+import 'react-native-reanimated';
 
 const App: React.FC = () => {
   return (

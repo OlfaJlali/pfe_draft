@@ -1,7 +1,7 @@
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert, SafeAreaView } from 'react-native';
-import { RootStackParamList } from '../App';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import { RootStackParamList } from '../types/navigationTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
 import DateInput from '../components/DateInput';
 
@@ -9,8 +9,8 @@ type BordoreauxFormRouteProp = RouteProp<RootStackParamList, 'BordoreauxForm'>;
 
 interface BordereauxFormProps {
   route: BordoreauxFormRouteProp;
+  navigation: StackNavigationProp<RootStackParamList, 'BordoreauxForm'>;
 }
-
 const BordoreauxFormScreen: React.FC<BordereauxFormProps> = ({ route }) => {
   const { totalAmount, date, selectedYear, documentCount } = route.params;
   const [progress, setProgress] = useState(1);

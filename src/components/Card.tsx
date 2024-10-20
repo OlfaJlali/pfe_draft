@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { homeScreenStyles } from '../styles/homeScreenStyles';
+import { View, Text, ViewStyle } from 'react-native';
+import { DashboardScreenStyles } from '../styles/DashboardScreenStyles';
 
 interface CardProps {
   title: string;
@@ -10,9 +10,9 @@ interface CardProps {
 
 export const Card: React.FC<CardProps> = ({ title, amount, style }) => {
   return (
-    <View style={[homeScreenStyles.card, style]}>
-      <Text style={homeScreenStyles.cardText}>{title}</Text>
-      {amount && <Text style={homeScreenStyles.cardAmount}>{amount}</Text>}
+    <View style={[DashboardScreenStyles.card, style]}>
+      <Text style={DashboardScreenStyles.cardText}>{title}</Text>
+      {amount && <Text style={DashboardScreenStyles.cardAmount}>{amount}</Text>}
     </View>
   );
 };

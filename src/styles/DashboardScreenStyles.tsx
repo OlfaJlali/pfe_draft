@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet } from 'react-native';
-const { height , width} = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
-export const homeScreenStyles = StyleSheet.create({
+export const DashboardScreenStyles = StyleSheet.create({
   safeAreaContainer: {
     flex: 1,
     backgroundColor: '#fff',
@@ -58,9 +58,16 @@ export const homeScreenStyles = StyleSheet.create({
   },
   iconContainer: {
     backgroundColor: '#e0e0e0',
+    opacity: 0.7,
     padding: 10,
     borderRadius: 10,
     marginRight: 10,
+    shadowColor: '#7D64FF', 
+    shadowOffset: { width: 2, height: 4 }, 
+    shadowOpacity: 0.5, 
+    elevation: 3, 
+    shadowRadius: 5,
+
   },
   iconText: {
     fontSize: 16,
@@ -72,7 +79,7 @@ export const homeScreenStyles = StyleSheet.create({
     fontSize: 16,
   },
   itemAmount: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
   },
 });

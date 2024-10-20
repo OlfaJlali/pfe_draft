@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { RootStackParamList } from '../types/navigationTypes'; 
 import OnboardingScreen from '../screens/OnBoardingScreen.tsx';
 import SignInScreen from '../screens/SignInScreen';
-import HomeScreen from '../screens/HomeScreen';
+import DashboardScreen from '../screens/DashboardScreen.tsx';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import VerifyScreen from '../screens/VerifyScreen';
 import BordoreauxScreen from '../screens/BordoreauxScreen';
@@ -23,7 +23,7 @@ const AppNavigator: React.FC = () => {
     <Stack.Navigator initialRouteName="Onboarding">
       <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
       <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Home" component={DashboardScreen} options={{ headerShown: false }} />
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ headerShown: false }} />
       <Stack.Screen name="VerifyScreen" component={VerifyScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Bordoreaux" component={BordoreauxScreen} options={{ headerShown: false }} />

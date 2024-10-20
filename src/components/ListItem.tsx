@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { homeScreenStyles } from '../styles/homeScreenStyles';
+import { View, Text } from 'react-native';
+import { DashboardScreenStyles } from '../styles/DashboardScreenStyles';
 
 interface ListItemProps {
   item: {
@@ -13,12 +13,12 @@ interface ListItemProps {
 
 export const ListItem: React.FC<ListItemProps> = ({ item }) => {
   return (
-    <View style={homeScreenStyles.itemContainer}>
-      <View style={homeScreenStyles.iconContainer}>
-        <Text style={homeScreenStyles.iconText}>{item.code}</Text>
+    <View style={DashboardScreenStyles.itemContainer}>
+      <View style={DashboardScreenStyles.iconContainer}>
+        <Text style={DashboardScreenStyles.iconText}>{item.code}</Text>
       </View>
-      <Text style={homeScreenStyles.itemLabel}>{item.label}</Text>
-      <Text style={[homeScreenStyles.itemAmount, { color: item.color }]}>{item.amount}</Text>
+      <Text style={DashboardScreenStyles.itemLabel}>{item.label}</Text>
+      <Text style={[DashboardScreenStyles.itemAmount, { color: item.color }]}>{item.amount}</Text>
     </View>
   );
 };

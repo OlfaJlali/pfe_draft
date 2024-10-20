@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { homeScreenStyles } from '../styles/homeScreenStyles';
+import { DashboardScreenStyles } from '../styles/DashboardScreenStyles';
 
 interface TabProps {
   title: string;
@@ -11,10 +11,10 @@ interface TabProps {
 export const Tab: React.FC<TabProps> = ({ title, isActive, onPress }) => {
   return (
     <TouchableOpacity
-      style={[homeScreenStyles.tab, isActive && homeScreenStyles.activeTab]}
+      style={[DashboardScreenStyles.tab, isActive && DashboardScreenStyles.activeTab]}
       onPress={onPress}
     >
-      <Text style={homeScreenStyles.tabText}>{title}</Text>
+      <Text style={DashboardScreenStyles.tabText}>{title}</Text>
     </TouchableOpacity>
   );
 };

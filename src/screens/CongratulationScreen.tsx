@@ -10,7 +10,7 @@ const CongratulationsScreen: React.FC = () => {
   const navigation = useNavigation<CongratulationsScreenNavigationProp>();
 
   const handleDone = () => {
-    navigation.navigate('Dashboard');
+    navigation.navigate('Bordoreaux');
   };
 
   return (

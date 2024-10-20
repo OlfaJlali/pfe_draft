@@ -7,7 +7,7 @@ import { RootStackParamList } from '../types/navigationTypes';
 const { height } = Dimensions.get('window');
 type SignInScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SignIn'>;
 
-const ButtonSheet: React.FC = () => {
+const BottomSheet: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
   const animatedHeight = useRef(new Animated.Value(height * 0.15)).current;
   const navigation = useNavigation<SignInScreenNavigationProp>(); // Use typed navigation
@@ -36,9 +36,6 @@ const ButtonSheet: React.FC = () => {
     <Animated.View style={[styles.bottomSheet, { height: animatedHeight }]}>
 
       {/* Large Button Positioned Higher */}
-      <TouchableOpacity style={styles.largeButton} onPress={toggleExpand}>
-        <Text style={styles.largeButtonText}>Main</Text>
-      </TouchableOpacity>
 
       {/* Row of Smaller Buttons */}
       <View style={styles.buttonRow}>
@@ -49,9 +46,12 @@ const ButtonSheet: React.FC = () => {
         <TouchableOpacity style={styles.button} onPress={goToProfile}>
           <Text style={styles.buttonText}>Accounts</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={toggleExpand}>
+        <Text style={styles.buttonText}>Main</Text>
+      </TouchableOpacity>
+
 
         {/* Spacer for extra space between Accounts and Cards */}
-        <View style={styles.spacer} />
 
         <TouchableOpacity style={styles.button} onPress={goToDashboard} >
           <Text style={styles.buttonText}>Dashboard</Text>
@@ -95,14 +95,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: -2 },
     shadowRadius: 10,
   },
-  indicator: {
-    width: 40,
-    height: 5,
-    backgroundColor: '#ccc',
-    borderRadius: 3,
-    alignSelf: 'center',
-    marginTop: 10,
-  },
   largeButton: {
     position: 'absolute', // Position large button separately from button row
     top: -20, // Move the large button above the bottom sheet
@@ -128,21 +120,28 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between', // Even spacing between buttons
     alignItems: 'center', // Center align vertically
-    width: '100%',
     paddingVertical: 20,
+    gap:5,
+    borderRadius:35,
+    shadowColor:'#000',
+    shadowOffset:{width:0,height:10},
+    shadowRadius:10,
+    shadowOpacity:0.1
   },
   button: {
-    width: 60,
-    height: 60,
+    // width: 60,
+    // height: 60,
+    flex:1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f7f7f7',
-    borderRadius: 30,
-    elevation: 3, // for shadow on Android
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 5,
+    gap:5
+    // backgroundColor: '#f7f7f7',
+    // borderRadius: 30,
+    // elevation: 3, // for shadow on Android
+    // shadowColor: '#000',
+    // shadowOpacity: 0.1,
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowRadius: 5,
   },
   buttonText: {
     fontSize: 12,
@@ -177,4 +176,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ButtonSheet;
+export default BottomSheet;

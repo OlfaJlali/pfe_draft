@@ -1,26 +1,18 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AppNavigator from './navigators/AppNavigator';
-import ConditionalButtonSheet from './components/ConditionalButtonSheet';
-import 'react-native-reanimated';
-
+import CustomTabsNavigator from './navigators/customTabsNavigator';
 const App: React.FC = () => {
+  const [isAuthed, setIsAuthed] = useState(false);
+
   return (
-    <GestureHandlerRootView style={styles.container}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>
-        <AppNavigator />
-        <ConditionalButtonSheet />
+        {isAuthed ? <CustomTabsNavigator /> : <AppNavigator setIsAuthed={setIsAuthed}  />}
       </NavigationContainer>
     </GestureHandlerRootView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;

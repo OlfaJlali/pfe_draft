@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from '../types/navigationTypes';
 import { useBordereauxForm } from '../hooks/useBordereauxForm';
 import DateInput from '../components/DateInput';
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
-import { Input } from '../components/TextInput';
-const { height } = Dimensions.get('window');
+import { TextInput } from 'react-native-gesture-handler';
 type VerifyScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Dashboard'>;
 
 const BordereauxScreen: React.FC = () => {

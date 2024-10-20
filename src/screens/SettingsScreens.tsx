@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from '../types/navigationTypes';
 
 const SettingsScreen = () => {
  type SettingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Settings'>;

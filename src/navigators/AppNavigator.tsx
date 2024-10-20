@@ -23,7 +23,7 @@ const AppNavigator: React.FC = () => {
     <Stack.Navigator initialRouteName="Onboarding">
       <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
       <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Home" component={DashboardScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Dashboard" component={DashboardScreen} options={{ headerShown: false }} />
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ headerShown: false }} />
       <Stack.Screen name="VerifyScreen" component={VerifyScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Bordoreaux" component={BordoreauxScreen} options={{ headerShown: false }} />

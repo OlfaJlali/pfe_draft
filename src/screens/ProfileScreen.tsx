@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from '../types/navigationTypes';
 
 const ProfileScreen: React.FC = () => {
     type ProfileScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Profile'>;

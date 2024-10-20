@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation from React Navigation
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../App'; // Import the types from where your navigator is defined
+import { RootStackParamList } from '../types/navigationTypes';
 
 const { height } = Dimensions.get('window');
 type SignInScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SignIn'>;
@@ -29,7 +29,7 @@ const ButtonSheet: React.FC = () => {
     navigation.navigate('Profile');
   };
   const goToDashboard = () => {
-    navigation.navigate('Home');
+    navigation.navigate('Dashboard');
   }
 
   return (

@@ -8,7 +8,7 @@ import DateInput from '../components/DateInput';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { Input } from '../components/TextInput';
 const { height } = Dimensions.get('window');
-type VerifyScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+type VerifyScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Dashboard'>;
 
 const BordereauxScreen: React.FC = () => {
   const navigation = useNavigation<VerifyScreenNavigationProp>();

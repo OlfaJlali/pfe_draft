@@ -1,7 +1,7 @@
 export type RootStackParamList = {
     Onboarding: undefined;
     SignIn: undefined;
-    Home: undefined;
+    Dashboard: undefined;
     ForgotPassword: undefined;
     VerifyScreen: undefined;
     ChangePasswordScreen: undefined;

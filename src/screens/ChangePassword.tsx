@@ -5,7 +5,7 @@ import { Button } from '../components/Button';   // Assuming custom Button compo
 import { signInScreenStyles } from '../styles/signInScreenStyles';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from '../types/navigationTypes';
 
 const ChangePasswordScreen: React.FC = () => {
   const [password, setPassword] = useState('');

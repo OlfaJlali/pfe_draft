@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../App'; 
+import { RootStackParamList } from '../types/navigationTypes';
 
 type SignInScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SignIn'>;
 
@@ -13,7 +13,7 @@ export const useSignIn = () => {
   const handleSignIn = () => {
     console.log('Email:', email);
     console.log('Password:', password);
-    navigation.navigate('Home');
+    navigation.navigate('Dashboard');
   };
 
   const handleForgotPassword = () => {

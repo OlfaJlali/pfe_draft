@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from '../types/navigationTypes';
 
 type CongratulationsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Congratulations'>;
 
@@ -10,7 +10,7 @@ const CongratulationsScreen: React.FC = () => {
   const navigation = useNavigation<CongratulationsScreenNavigationProp>();
 
   const handleDone = () => {
-    navigation.navigate('Home');
+    navigation.navigate('Dashboard');
   };
 
   return (

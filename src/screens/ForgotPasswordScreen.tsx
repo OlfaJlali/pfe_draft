@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from '../types/navigationTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 

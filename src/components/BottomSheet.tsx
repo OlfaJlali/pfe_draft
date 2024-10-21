@@ -1,36 +1,12 @@
-import { View,  Pressable,  } from 'react-native';
+import { View, Pressable } from 'react-native';
 import { icons } from 'lucide-react-native';
-import Animated, { FadeInRight, FadeOutRight, LinearTransition } from 'react-native-reanimated';
-import { MotiProps, MotiView } from 'moti';
+import Animated, { FadeInLeft, FadeInRight, FadeOutRight, LinearTransition } from 'react-native-reanimated';
+import { MotiView } from 'moti';
+import { IconProp, TabsNavigatorProps } from '../types/BottomSheetTypes';
 
-type IconNames = keyof typeof icons;
-
-export type TabItem = {
-    icon: IconNames;
-    label: string;
-    component: React.FC; 
-};
-
-type TabsNavigatorProps = {
-    data: TabItem[];
-    selectedIndex: number;
-    onChange: (index: number) => void;
-    activeBackgroundColor?: string;
-    inactiveBackgroundColor?: string;
-    activeColor?: string 
-    inactiveColor?: string
-
-};
-
-type IconProp = {
-    name: IconNames;
-    color: string;
-    
-} & MotiProps;
-
-function Icon({ color , name,...rest }: IconProp) {
+function Icon({ color, size = 16, name, ...rest }: IconProp) {
     const IconComponent = icons[name];
-    return <IconComponent color={color} size={16} {...rest} />;
+    return <IconComponent color={color} size={size} {...rest} />;
 }
 
 const _spacing = 4;
@@ -44,22 +20,38 @@ export function TabsNavigator({
     activeColor = '#fff',
     inactiveColor = '#ddd'
 }: TabsNavigatorProps) {
+    
     return (
-        <View style={{ flexDirection: 'row', gap: _spacing * 8 , paddingBottom:_spacing * 5 , justifyContent:'center' }}>
+        <View style={{  flexDirection: 'row', height:50, alignItems: 'center', justifyContent:'space-evenly', backgroundColor:'white',  paddingBottom: _spacing * 5 }}>
             {data.map((item, index) => {
+               
                 const isSelected = selectedIndex === index;
-                return (
-                    <View key={index}>
+
+                if (index === 2) {
+                    // Render an empty button for spacing
+                    return (
                         <MotiView
+                            key={index}
+                            style={{width:160,alignItems: 'center' }} // Empty button for spacing
+                        >
+                            <Pressable style={{ padding: 12, opacity: 0 }} />  
+                        </MotiView>
+                    );
+                }
+                return (
+                    <MotiView
+                        key={index}
                         animate={{
                             backgroundColor: isSelected ? activeBackgroundColor : inactiveBackgroundColor,
                             borderRadius: 5,
                             overflow: 'hidden',
                             borderColor: 'black',
-                            borderWidth: isSelected ? 0 : 1
+                            borderWidth: isSelected ? 0 : 1,
+
                         }}
-                            layout={LinearTransition.springify().damping(80).stiffness(200)}
-                        >
+                        layout={LinearTransition.springify().damping(80).stiffness(200)}
+                        style={{   maxWidth: 100, alignItems: 'center' }} // Fixed width for buttons
+                    >
                         <Pressable
                             onPress={() => {
                                 onChange(index);
@@ -68,31 +60,51 @@ export function TabsNavigator({
                                 padding: _spacing * 3,
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                gap: _spacing,
                                 flexDirection: 'row',
                             }}
                         >
-                             <Icon 
-                             name={item.icon}
-                             color={isSelected ? '#fff' : 'black'}
-                             animate={
-                                {color: isSelected ? activeColor : inactiveColor,
-                                }
-                            }
-                             />
+                            <Icon
+                                name={item.icon}
+                                size={index === 2 ? 40 : 16}
+                                color={isSelected ? '#fff' : 'black'}
+                                animate={{
+                                    color: isSelected ? activeColor : inactiveColor,
+                                }}
+                            />
+                            
                             {isSelected && (
-                                <Animated.Text 
-                                entering={FadeInRight.springify().damping(80).stiffness(200)}
-                                exiting={FadeOutRight.springify().damping(80).stiffness(200)}
-                                style={{
-                                color : isSelected ? activeColor : inactiveColor  
-                            }}>{item.label}</Animated.Text>)
-                            }
+                                <Animated.Text
+                                    entering={ FadeInRight.springify().damping(80).stiffness(200)}
+                                    exiting={FadeOutRight.springify().damping(80).stiffness(200)}
+                                    style={{
+                                        color: isSelected ? activeColor : inactiveColor
+                                    }}
+                                >
+                                    {item.label}
+                                </Animated.Text>
+                            )}
+                            
                         </Pressable>
-                        </MotiView>
-                    </View>
+                        
+                    </MotiView>
                 );
             })}
+                        <MotiView
+                key={2}
+                style={{
+                    position: 'absolute',
+                    top: -40, 
+                    left: '50%',
+                    width:80,
+                    transform: [{ translateX: -50 }],
+                    alignItems: 'center',
+                }}
+            >
+                <Pressable onPress={() => onChange(2)} style={{ padding: 12 ,borderWidth:1, borderColor:'black', borderRadius: 20, backgroundColor: selectedIndex === 2 ? activeBackgroundColor : inactiveBackgroundColor}}>
+                    <Icon name={data[2].icon} size={40} color={selectedIndex === 2 ? '#fff' : 'black'} />
+                </Pressable>
+            </MotiView>
         </View>
+        
     );
 }

@@ -18,7 +18,9 @@ export const ListItem: React.FC<ListItemProps> = ({ item }) => {
         <Text style={DashboardScreenStyles.iconText}>{item.code}</Text>
       </View>
       <Text style={DashboardScreenStyles.itemLabel}>{item.label}</Text>
+      {/* <View style={DashboardScreenStyles.itemAmountContainer}> */}
       <Text style={[DashboardScreenStyles.itemAmount, { color: item.color }]}>{item.amount}</Text>
+      {/* </View> */}
     </View>
   );
 };

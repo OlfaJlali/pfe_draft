@@ -12,6 +12,20 @@ import { FilteredDataItem } from '../types/dashboardtypes';
 import { useScrollHandler } from '../hooks/useScrollHandler';
 
 const DashboardScreen = () => {
+  const colorPalettes = [
+    // ['#00BFFF', '#0056A6'], // First card colors
+    ['#3E77BC', '#3E77BC'],
+    
+    ['#3E77BC', '#3E77BC'],
+
+    ['#4275bc', '#3E77BC'],
+    ['#5b8cff', '#4275b9'],   ['#1a3049', '#4b4f60'],
+    ['#2c4e8e', '#1a3049'],
+    // ['#4275b9', '#1a3049'], // Second card colors (darker blue)
+
+    ['#87CEFA', '#4682B4'], // Second card colors (lighter shades)
+    // Add more palettes as needed
+  ];
   const { selectedTab, setSelectedTab } = useTabState<'available' | 'available2'>('available');
   const [filteredData, setFilteredData] = useState<FilteredDataItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -36,7 +50,7 @@ const DashboardScreen = () => {
               item={item}
               index={index}
               scrollX={scrollX}
-            />
+              />
           )}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -60,6 +74,9 @@ const DashboardScreen = () => {
         />
       </View>
       <FlatList
+      //FCFFFE
+      
+      style={{backgroundColor:'#FCFFFE', borderRadius:16, elevation: 5 }}
         data={filteredData}
         renderItem={({ item }) => <ListItem item={item} />}
         keyExtractor={(item) => item.id}

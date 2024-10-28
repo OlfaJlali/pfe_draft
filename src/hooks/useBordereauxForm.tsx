@@ -4,13 +4,13 @@ import { FlatList } from 'react-native';
 export const useBordereauxForm = () => {
   const [totalAmount, setTotalAmount] = useState('1000000000');
   const [selectedYear, setSelectedYear] = useState(2024);
-  const [documentCount, setDocumentCount] = useState(1);
+  const [documentCount, setDocumentCount] = useState('1');
   const [date, setDate] = useState(new Date());
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const flatListRef = useRef<FlatList<number>>(null);
 
-  const incrementCount = () => setDocumentCount(prev => prev + 1);
-  const decrementCount = () => setDocumentCount(prev => Math.max(1, prev - 1));
+  // const incrementCount = () => setDocumentCount(prev => prev + 1);
+  // const decrementCount = () => setDocumentCount(prev => Math.max(1, prev - 1));
 
   const years = Array.from({ length: 21 }, (_, i) => selectedYear - 10 + i);
 
@@ -34,13 +34,14 @@ export const useBordereauxForm = () => {
     selectedYear,
     setSelectedYear,
     documentCount,
-    incrementCount,
-    decrementCount,
+    // incrementCount,
+    // decrementCount,
     date,
     isDatePickerOpen,
     closeDatePicker,
     setDate,
     flatListRef,
     years,
+    setDocumentCount
   };
 };

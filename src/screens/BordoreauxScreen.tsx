@@ -1,11 +1,16 @@
 import React, { useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types/navigationTypes';
 import { useBordereauxForm } from '../hooks/useBordereauxForm';
 import DateInput from '../components/DateInput';
 import { TextInput } from 'react-native-gesture-handler';
+import LinearGradient from 'react-native-linear-gradient';
+import TransactionList from '../components/DocumentsNumber';
+import InterestPayment from '../components/InterestPayment';
+import Counter from './counter';
+import DocsAndAmountFom from '../components/DocsAndAmountFom';
 type VerifyScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Dashboard'>;
 
 const BordereauxScreen: React.FC = () => {
@@ -16,8 +21,9 @@ const BordereauxScreen: React.FC = () => {
     selectedYear,
     setSelectedYear,
     documentCount,
-    incrementCount,
-    decrementCount,
+    setDocumentCount,
+    // incrementCount,
+    // decrementCount,
     date,
     isDatePickerOpen,
     closeDatePicker,
@@ -38,11 +44,17 @@ useEffect(() => {
 }, [selectedYear]);
 
   const handleGoToForm = () => {
+    console.log('totalAmount:', totalAmount )
+    let docsCount = parseInt(documentCount)
+    console.log('documentCount:', docsCount )
+    console.log('selectedYear:', selectedYear )
+    console.log('date:', date )
+
     navigation.navigate('BordoreauxForm', {
       totalAmount,
       date,
       selectedYear,
-      documentCount,  
+      documentCount : docsCount ,  
     });
   };
   const renderYear = ({ item }: { item: number }) => (
@@ -54,71 +66,69 @@ useEffect(() => {
   );
 
   return (
+    <SafeAreaView style={styles.container}>
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
     <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Total amount</Text>
-        <TextInput
-          style={styles.input}
-          value={totalAmount}
-          onChangeText={setTotalAmount}
-          keyboardType="numeric"
-          
-        />
-      </View>
-      <DateInput
-        date={date}
-        open={isDatePickerOpen}
-        
-        onConfirm={(date: Date) => {
-          setDate(date);
-          closeDatePicker();
-        }}
-        onCancel={closeDatePicker}
-      />
-
-      <View style={styles.horizontalContainer}>
-        <View style={[styles.yearContainer, styles.flexItem]}>
-          <Text style={styles.label}>Bordereau year</Text>
-          <FlatList
-            ref={flatListRef}
-            data={years}
-            keyExtractor={(item) => item.toString()}
-            renderItem={renderYear}
-            contentContainerStyle={styles.yearSelector}
-            showsVerticalScrollIndicator={false}
-            getItemLayout={(data, index) => ({
-              length: 50,
-              offset: 55 * index,
-              index,
-            })}
-            onScrollToIndexFailed={(info) => {
-              console.error('Scroll to index failed', info);
-            }}
+    <Text style={styles.sectionTitle}>Mode of Payment</Text>
+      <View style={styles.inputContainer} >
+        <Text style={styles.label}>Enter amount</Text>
+        <View style={styles.AmountinputContainer}>
+          <TextInput
+            style={styles.input}
+            value={totalAmount}
+            onChangeText={setTotalAmount}
+            keyboardType="numeric"
+            
           />
+          <Text style={styles.input}>TND</Text>
+
+        </View>
+        <Text style={styles.label}>Enter documents number</Text>
+        <View style={styles.AmountinputContainer}>
+          <TextInput
+            style={styles.input}
+            value={documentCount}
+            onChangeText={setDocumentCount}
+            keyboardType="numeric"
+            
+          />
+          <Text style={styles.input}>Document</Text>
+
+        </View>
         </View>
 
-        <View style={[styles.counterContainer, styles.flexItem]}>
-          <Text style={styles.label}>Documents number</Text>
-          <View style={styles.counter}>
-            <TouchableOpacity onPress={decrementCount} style={styles.counterButton}>
-              <Text style={styles.counterText}>-</Text>
-            </TouchableOpacity>
-            <Text style={styles.documentCount}>{documentCount}</Text>
-            <TouchableOpacity onPress={incrementCount} style={styles.counterButton}>
-              <Text style={styles.counterText}>+</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-
+    {/* <DocsAndAmountFom /> */}
+      
+  <InterestPayment     
+    selectedYear={selectedYear}
+    setSelectedYear={setSelectedYear}
+    date={date}
+    setDate={setDate}
+ />
+     
       <TouchableOpacity style={styles.saveButton} onPress={handleGoToForm}>
         <Text style={styles.saveButtonText}>Save</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> 
     </View>
+ 
+    </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    paddingBottom: 110,
+  },
+
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -131,23 +141,40 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   inputContainer: {
-    backgroundColor: '#f0f4ff',
+   backgroundColor: '#1C162E',
+   opacity: 0.9,
     padding: 16,
-    borderRadius: 10,
+    // borderColor: '#ddd',
+    // borderWidth:2,
+    borderRadius: 12,
     marginBottom: 16,
+    shadowColor: "#3E77BC",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity:  .5,
+    shadowRadius: 5.62,
+    elevation: 6
+    },
+  AmountinputContainer: {
+    flexDirection: 'row'
   },
   label: {
     fontSize: 14,
-    color: '#333',
+    fontWeight: 'bold',
+    color: '#1AD5AD',
     marginBottom: 8,
   },
   input: {
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     borderRadius: 8,
     padding: 12,
-    fontSize: 16,
-    borderColor: '#ddd',
-    borderWidth: 1,
+    fontSize: 26,
+    color: '#ddd',
+    fontWeight: 'regular'
+    // borderColor: '#ddd',
+    // borderWidth: 1,
   },
   yearContainer: {
     backgroundColor: '#f0f4ff',
@@ -199,7 +226,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   saveButton: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#3E77BC',
     padding: 16,
     borderRadius: 10,
     alignItems: 'center',

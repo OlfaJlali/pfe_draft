@@ -2,12 +2,11 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   subtitle: {
-    color: '#282534',
-    fontSize: 13,
     marginTop: 10,
     maxWidth: '70%',
     textAlign: 'center',
     lineHeight: 23,
+
   },
   title: {
     color: '#282534',
@@ -27,7 +26,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     height: 50,
     borderRadius: 5,
-    backgroundColor: '#1591ea',
+    backgroundColor: '#3E77BC',
     justifyContent: 'center',
     alignItems: 'center',
   },

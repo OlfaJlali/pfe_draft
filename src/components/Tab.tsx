@@ -10,11 +10,12 @@ interface TabProps {
 
 export const Tab: React.FC<TabProps> = ({ title, isActive, onPress }) => {
   return (
+    
     <TouchableOpacity
       style={[DashboardScreenStyles.tab, isActive && DashboardScreenStyles.activeTab]}
       onPress={onPress}
     >
-      <Text style={DashboardScreenStyles.tabText}>{title}</Text>
+      <Text style={isActive ? DashboardScreenStyles.tabTextSelected  :  DashboardScreenStyles.tabText}>{title}</Text>
     </TouchableOpacity>
   );
 };

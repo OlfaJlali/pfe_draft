@@ -34,20 +34,37 @@ export const DashboardScreenStyles = StyleSheet.create({
   },
   tabContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    alignSelf:'center',
+    gap:16,
     marginVertical: 16,
   },
   tab: {
     paddingVertical: 8,
     paddingHorizontal: 16,
+    borderColor: '#282534', borderWidth: 1, backgroundColor: 'transparent',
+    borderRadius: 5
   },
   activeTab: {
-    borderBottomWidth: 2,
-    borderBottomColor: '#007bff',
+    borderWidth: 0,
+    backgroundColor:'#3E77BC',
+    borderRadius: 5,
+
+    // borderBottomWidth: 2,
+    // borderBottomColor: '#007bff',
+
+
   },
   tabText: {
-    fontSize: 16,
+    fontWeight: 'bold',
+    fontSize: 15,
+    color:'#282534'
   },
+  tabTextSelected: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    color:'#fff'
+  },
+  // C6C4CA
   itemContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -57,29 +74,41 @@ export const DashboardScreenStyles = StyleSheet.create({
     borderBottomColor: '#ddd',
   },
   iconContainer: {
-    backgroundColor: '#e0e0e0',
-    opacity: 0.7,
+    backgroundColor: 'transparent',
+    // opacity: 0.7,
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 5,
+    height: 44,
+    width: 44,
     marginRight: 10,
-    shadowColor: '#7D64FF', 
-    shadowOffset: { width: 2, height: 4 }, 
-    shadowOpacity: 0.5, 
-    elevation: 3, 
-    shadowRadius: 5,
+    alignItems:'center',
+    borderColor: '#3E77BC', borderWidth: 0.2
+    // shadowColor: '#7D64FF', 
+    // shadowOffset: { width: 2, height: 4 }, 
+    // shadowOpacity: 0.5, 
+    // elevation: 3, 
+    // shadowRadius: 5,
 
   },
+  
   iconText: {
-    fontSize: 16,
-    color: '#007bff',
+    fontSize: 20,
+    color: '#3E77BC',
     fontWeight: 'bold',
   },
   itemLabel: {
     flex: 1,
-    fontSize: 16,
-  },
-  itemAmount: {
     fontSize: 14,
     fontWeight: 'bold',
+    color:'#1C162E'
   },
+  itemAmount: {
+    padding: 12,
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  itemAmountContainer:{
+    backgroundColor: '#F2F2F2',
+    borderRadius: 56 ,
+  }
 });

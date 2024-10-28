@@ -13,6 +13,7 @@ export type RootStackParamList = {
     ResetPassword: undefined;
     Notifications: undefined;
     CurrentScreen: undefined;
+    BordoreauxStarter: undefined;
     BordoreauxForm: {
         totalAmount: string;
         date: Date;

@@ -27,7 +27,7 @@ jobs:
       - name: Install pod dependency
         run: |
           cd ios
-          bundle exec pod install
+          pod install
       - name: Build iOS JS Bundle
         run: |
           npm run package-ios
@@ -35,16 +35,14 @@ jobs:
         run: |
           cd ios
           gem install bundler
-      - name: Install gem plugins
-        run: |
-          cd ios
-          bundle install
-      - name: Run fastlane
-        run: |
-          cd ios
-          bundle exec fastlane build_testflight
-
-  android-build:
+      # - name: Install gem plugins
+      #   run: |
+      #     cd ios
+      #     bundle install
+      # - name: Run fastlane
+      #   run: |
+      #     cd ios
+      #     bundle exec fastlane build_testflight
     name: Android Dev Build
     runs-on: self-hosted
     steps:

@@ -31,3 +31,7 @@ jobs:
       - name: Build iOS JS Bundle
         run: |
           npm run package-ios
+      - name: Run fastlane
+        run: |
+          cd ios
+          bundle exec fastlane build_testflight
